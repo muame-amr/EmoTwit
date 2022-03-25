@@ -1,7 +1,5 @@
 package model.word2vec;
 
-import org.datavec.api.util.ClassPathResource;
-import org.deeplearning4j.core.storage.StatsStorage;
 import org.deeplearning4j.models.embeddings.WeightLookupTable;
 import org.deeplearning4j.models.embeddings.inmemory.InMemoryLookupTable;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
@@ -15,14 +13,10 @@ import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreproc
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 
-import org.deeplearning4j.ui.api.UIServer;
-import org.deeplearning4j.ui.model.stats.StatsListener;
-import org.deeplearning4j.ui.model.storage.InMemoryStatsStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -32,7 +26,7 @@ public class CreateWord2Vec {
 
     public static void main(String[] args) throws IOException {
         String resourcePath = new File(System.getProperty("user.dir"), "src/main/resources/").getAbsolutePath();
-        String filePath = new File(resourcePath, "twitter-malaya/raw_tweets_clean.txt").getAbsolutePath();
+        String filePath = new File(resourcePath, "twitter-malaya-clean/raw_tweets_clean.txt").getAbsolutePath();
 
         log.info("Load & Vectorize Sentences....");
         // Strip white space before and after for each line
