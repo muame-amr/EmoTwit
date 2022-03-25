@@ -24,6 +24,7 @@ hs_err_pid*
 
 # datasets
 datasets
+sentiment-analysis-model/src/main/resources
 
 # util files
 ./writeText.ipynb
