@@ -7,6 +7,7 @@ import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.paragraphvectors.ParagraphVectors;
 import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache;
 import org.deeplearning4j.text.documentiterator.FileLabelAwareIterator;
 import org.deeplearning4j.text.documentiterator.LabelAwareIterator;
 import org.deeplearning4j.text.documentiterator.LabelledDocument;
@@ -33,7 +34,7 @@ public class ParagraphVectorClassifier {
         File unlabeled = new File(resourcePath, "paravec/unlabeled");
         ;
 
-        Word2Vec vec = WordVectorSerializer.readWord2VecModel(new File(resourcePath, "twitter-ms-vector.txt"));
+        Word2Vec vec = WordVectorSerializer.readWord2VecModel(new File(resourcePath, "twitter-malaya-vector.zip"));
 
         LabelAwareIterator iterator = new FileLabelAwareIterator.Builder()
                 .addSourceFolder(labeled)
@@ -42,12 +43,19 @@ public class ParagraphVectorClassifier {
         TokenizerFactory tokenizerFactory = new DefaultTokenizerFactory();
         tokenizerFactory.setTokenPreProcessor(new CommonPreprocessor());
 
+        AbstractCache<VocabWord> cache = new AbstractCache<>();
+
         ParagraphVectors paragraphVectors = new ParagraphVectors.Builder()
-//                .useExistingWordVectors(vec)
+                .useExistingWordVectors(vec)
                 .learningRate(0.025)
                 .minLearningRate(0.001)
                 .batchSize(1000)
+                .layerSize(100)
                 .epochs(20)
+                .windowSize(15)
+                .iterations(5)
+                .minWordFrequency(5)
+                .vocabCache(cache)
                 .iterate(iterator)
                 .trainWordVectors(true)
                 .tokenizerFactory(tokenizerFactory)
@@ -55,7 +63,7 @@ public class ParagraphVectorClassifier {
 
         paragraphVectors.fit();
 
-        String destination = new File(resourcePath, "paravec/twitter-ms-paravec.zip").getAbsolutePath();
+        String destination = new File(resourcePath, "paravec/twitter-malaya-paravec.zip").getAbsolutePath();
         WordVectorSerializer.writeParagraphVectors(paragraphVectors, destination);
 
         FileLabelAwareIterator unlabeledIterator = new FileLabelAwareIterator.Builder()
@@ -74,7 +82,7 @@ public class ParagraphVectorClassifier {
             INDArray documentAsCentroid = meansBuilder.documentAsVector(document);
             List<Pair<String, Double>> scores = seeker.getScores(documentAsCentroid);
 
-            log.info("Document '" + document.getLabel() + "' falls into the following categories: ");
+            log.info("Document '" + document.getContent() + "' falls into the following categories: ");
             for (Pair<String, Double> score : scores) {
                 log.info("        " + score.getFirst() + ": " + score.getSecond());
             }
