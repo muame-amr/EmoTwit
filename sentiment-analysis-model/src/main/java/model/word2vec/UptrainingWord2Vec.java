@@ -19,7 +19,7 @@ public class UptrainingWord2Vec {
 
     public static void main(String[] args) throws FileNotFoundException {
         String resourcePath = new File(System.getProperty("user.dir"), "src/main/resources/").getAbsolutePath();
-        String filePath = new File(resourcePath, "twitter-malaya/raw_tweets_clean.txt").getAbsolutePath();
+        String filePath = new File(resourcePath, "twitter-malaya-clean/raw_tweets_clean.txt").getAbsolutePath();
         File vectorFile = new File(resourcePath, "malay_word2vec/mswiki.vector");
 
         Word2Vec vec = WordVectorSerializer.readWord2VecModel(vectorFile);
