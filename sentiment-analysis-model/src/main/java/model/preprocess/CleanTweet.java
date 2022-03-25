@@ -31,6 +31,11 @@ public class CleanTweet {
         return cleanTweet;
     }
 
+    public static String removeSymbols(String tweets) {
+        String cleanTweets = tweets.replaceAll("[^a-zA-Z0-9@#\\s]", "").trim();
+        return cleanTweets;
+    }
+
     public static String removeHandle(String tweets) {
         String cleanTweets = tweets.replaceAll("(\\s+|^)@\\w+", "").trim();
         return cleanTweets;
@@ -52,8 +57,8 @@ public class CleanTweet {
     }
 
     public static void main(String[] args) throws IOException {
-        File readFile = new File(System.getProperty("user.dir"), "src/main/resources/twitter-malaya/raw_tweets.txt");
-        File writeFile = new File(System.getProperty("user.dir"), "src/main/resources/twitter-malaya/raw_tweets_clean.txt");
+        File readFile = new File(System.getProperty("user.dir"), "src/main/resources/twitter-malaya/test/pos_test.csv");
+        File writeFile = new File(System.getProperty("user.dir"), "src/main/resources/twitter-malaya-clean/test/pos_test.txt");
         Scanner myReader = new Scanner(readFile);
         FileWriter myWriter = new FileWriter(writeFile);
         Scanner s = new Scanner(new File(System.getProperty("user.dir"), "src/main/resources/stopwords-ms.txt"));
@@ -65,6 +70,7 @@ public class CleanTweet {
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             data = removeURL(data);
+            data = removeSymbols(data);
             data = removeHandle(data);
             data = removeHashtag(data);
             data = removeStopWords(data, stopwords);
