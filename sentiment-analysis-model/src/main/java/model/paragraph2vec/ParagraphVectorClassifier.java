@@ -34,7 +34,9 @@ public class ParagraphVectorClassifier {
         File unlabeled = new File(resourcePath, "paravec/unlabeled");
         ;
 
-        Word2Vec vec = WordVectorSerializer.readWord2VecModel(new File(resourcePath, "twitter-malaya-vector.zip"));
+        Word2Vec vec = WordVectorSerializer.readWord2VecModel(new File(resourcePath, "mswiki-uptrain.zip"));
+
+        log.info("Load & Vectorize Sentences....");
 
         LabelAwareIterator iterator = new FileLabelAwareIterator.Builder()
                 .addSourceFolder(labeled)
@@ -45,25 +47,27 @@ public class ParagraphVectorClassifier {
 
         AbstractCache<VocabWord> cache = new AbstractCache<>();
 
+        log.info("Building model....");
         ParagraphVectors paragraphVectors = new ParagraphVectors.Builder()
-                .useExistingWordVectors(vec)
                 .learningRate(0.025)
                 .minLearningRate(0.001)
                 .batchSize(1000)
-                .layerSize(100)
                 .epochs(20)
-                .windowSize(15)
-                .iterations(5)
-                .minWordFrequency(5)
-                .vocabCache(cache)
                 .iterate(iterator)
                 .trainWordVectors(true)
                 .tokenizerFactory(tokenizerFactory)
+//                .useExistingWordVectors(vec)
+                .layerSize(100)
+                .iterations(5)
+                .windowSize(5)
+                .minWordFrequency(1)
+                .vocabCache(cache)
                 .build();
 
+        log.info("Fitting Word2Vec model....");
         paragraphVectors.fit();
 
-        String destination = new File(resourcePath, "paravec/twitter-malaya-paravec.zip").getAbsolutePath();
+        String destination = new File(resourcePath, "paravec/twitter-ms-paravec.zip").getAbsolutePath();
         WordVectorSerializer.writeParagraphVectors(paragraphVectors, destination);
 
         FileLabelAwareIterator unlabeledIterator = new FileLabelAwareIterator.Builder()
