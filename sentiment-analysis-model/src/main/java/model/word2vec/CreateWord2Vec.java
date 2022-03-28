@@ -48,15 +48,19 @@ public class CreateWord2Vec {
 
         log.info("Building model....");
         Word2Vec vec = new Word2Vec.Builder()
-                .minWordFrequency(5)
+                .minWordFrequency(3)
+                .learningRate(0.025)
+                .minLearningRate(1e-3)
+                .sampling(1e-5)
+                .negativeSample(10)
                 .iterations(5)
+                .useAdaGrad(false)
                 .seed(42)
-                .layerSize(100)
+                .layerSize(300)
                 .windowSize(8)
                 .vocabCache(cache)
                 .lookupTable(table)
                 .iterate(iter)
-                .negativeSample(0.1)
                 .tokenizerFactory(t)
                 .build();
 
