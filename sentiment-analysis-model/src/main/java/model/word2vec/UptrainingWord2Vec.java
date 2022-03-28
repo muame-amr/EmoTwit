@@ -19,7 +19,7 @@ public class UptrainingWord2Vec {
 
     public static void main(String[] args) throws FileNotFoundException {
         String resourcePath = new File(System.getProperty("user.dir"), "src/main/resources/").getAbsolutePath();
-        String filePath = new File(resourcePath, "twitter-malaya-clean/raw_tweets_clean.txt").getAbsolutePath();
+        String filePath = new File(resourcePath, "twitter-ms/raw_text.txt").getAbsolutePath();
         File vectorFile = new File(resourcePath, "malay_word2vec/mswiki.vector");
 
         Word2Vec vec = WordVectorSerializer.readWord2VecModel(vectorFile);
@@ -32,10 +32,14 @@ public class UptrainingWord2Vec {
         log.info("Reconfiguring model....");
         vec.setTokenizerFactory(tokenizerFactory);
         vec.setSentenceIterator(iterator);
-        vec.getConfiguration().setNegative(0.1);
+        vec.getConfiguration().setMinWordFrequency(3);
+//        vec.getConfiguration().setNegative(0.1);
 
         log.info("Uptraining Word2Vec model....");
         vec.fit();
+
+        log.info("Vector size....");
+        System.out.println(vec.getWordVector(vec.vocab().wordAtIndex(0)).length);
 
         log.info("Writing word vectors to text file....");
 
