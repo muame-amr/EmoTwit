@@ -7,11 +7,11 @@ import {
 	ListItem,
 } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
-import { Hero } from "../components/Hero";
-import { Container } from "../components/Container";
-import { Main } from "../components/Main";
+import { Hero } from "../sections/Hero";
+import { Container } from "../sections/Container";
+import { Main } from "../sections/Main";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
-import { Footer } from "../components/Footer";
+import { Footer } from "../sections/Footer";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import Head from "next/head";
 

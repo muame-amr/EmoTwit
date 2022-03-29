@@ -1,13 +1,12 @@
 import { React, useState, useEffect } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
-import { Main } from "../components/Main";
-import { Container } from "../components/Container";
+import { Main } from "../sections/Main";
+import { Container } from "../sections/Container";
 import { Search } from "../components/Search";
 import { Tables } from "../components/Tables";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { BackHome } from "../components/BackHome";
-import { Hero } from "../components/Hero";
-import { Head } from "next/document";
+import { Hero } from "../sections/Hero";
 
 export default function Sentiment() {
 	const [tweets, setTweets] = useState([]);

@@ -1,5 +1,5 @@
 import { Flex, Text, Box, Container, Stack } from "@chakra-ui/react";
-import { SocialButton } from "./SocialButton";
+import { SocialButton } from "../components/SocialButton";
 import { FaGithub } from "react-icons/fa";
 import { SiNextdotjs, SiChakraui } from "react-icons/si";
 
