@@ -12,7 +12,10 @@ export const Footer = (props) => {
 			<Container as={Stack} maxW={"6xl"} py={3} spacing={4}>
 				<Text>Next⚡Chakra © 2022</Text>
 				<Stack direction={"row"} spacing={6}>
-					<SocialButton label={"Github"} href={"https://github.com/muame-amr"}>
+					<SocialButton
+						label={"Github"}
+						href={"https://github.com/muame-amr/Sentiment-Analysis-Web-App"}
+					>
 						<FaGithub />
 					</SocialButton>
 					<SocialButton label={"Next"} href={"https://nextjs.org/"}>

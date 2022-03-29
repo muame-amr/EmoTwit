@@ -6,6 +6,7 @@ import app.twitter.GetTweet;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.nd4j.common.io.ClassPathResource;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -20,12 +21,12 @@ import java.util.*;
 @Path("/api")
 public class TwitterResource {
 
-    MultiLayerNetwork net = MultiLayerNetwork.load(new ClassPathResource("RNNSentimentModel.net").getFile(), true);
+    MultiLayerNetwork net = MultiLayerNetwork.load(new ClassPathResource("RNNSentimentModel.net").getFile(), false);
     WordVectors vec = WordVectorSerializer.loadStaticModel(new ClassPathResource("mswiki-uptrain.zip").getFile());
     TweetInference inference = new TweetInference(net, vec);
     Set<Tweet> tweetList = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
-    public TwitterResource() throws IOException {
+    public TwitterResource() throws IOException {;
     }
 
     @GET
@@ -52,7 +53,6 @@ public class TwitterResource {
             user.setId(status.getId());
             user.setUsername(status.getUser().getScreenName());
             user.setContent(tweetContent);
-            /* placeholder score for sentiment model */
             user.setSentiment(inference.getSentiment(tweetContent));
             tweetList.add(user);
         }

@@ -54,7 +54,7 @@ export const Tables = ({ tweets }) => {
 							<Tr key={tweet.id}>
 								<Td>{tweet.username}</Td>
 								<Td>{tweet.content}</Td>
-								<Td>{tweet.score > 5 ? "😄" : "😞"}</Td>
+								<Td>{tweet.sentiment === "Positive" ? "😄" : "😞"}</Td>
 							</Tr>
 						))
 					) : (

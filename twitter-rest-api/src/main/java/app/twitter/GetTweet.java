@@ -10,7 +10,7 @@ import java.util.Map;
 public class GetTweet {
     public QueryResult getTweets(String keyword) throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
-        Query query = new Query(keyword + " exclude:replies exclude:retweets");
+        Query query = new Query(keyword + " exclude:replies exclude:retweets -filter:media");
         QueryResult result = twitter.search(query);
         return result;
 //        for (Status status : result.getTweets()) {

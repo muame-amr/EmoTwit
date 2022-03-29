@@ -7,6 +7,7 @@ import { Tables } from "../components/Tables";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { BackHome } from "../components/BackHome";
 import { Hero } from "../components/Hero";
+import { Head } from "next/document";
 
 export default function Sentiment() {
 	const [tweets, setTweets] = useState([]);

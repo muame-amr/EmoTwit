@@ -13,9 +13,14 @@ import { Main } from "../components/Main";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { Footer } from "../components/Footer";
 import { AiFillTwitterCircle } from "react-icons/ai";
+import Head from "next/head";
 
 const Index = () => (
 	<Container height="100vh">
+		<Head>
+			<title>Sentiment Analysis</title>
+			<link rel="icon" href="/feelings.png" />
+		</Head>
 		<Hero />
 		<Main>
 			{/* <Text mt={8}>

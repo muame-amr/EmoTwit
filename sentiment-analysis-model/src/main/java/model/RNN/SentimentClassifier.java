@@ -47,7 +47,7 @@ public class SentimentClassifier {
 
         int batchSize = 128;     //Number of examples in each minibatch
         int vectorSize = 300;   //Size of the word vectors. 300 in the ms-wiki model
-        int nEpochs = 5;        //Number of epochs (full passes of training data) to train on
+        int nEpochs = 2;        //Number of epochs (full passes of training data) to train on
         int truncateTweetsToLength = 256;  //Truncate reviews with length (# words) greater than this
         final int seed = 0;     //Seed for reproducibility
 
@@ -56,7 +56,7 @@ public class SentimentClassifier {
         MultiLayerConfiguration conf =  new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .updater(new Adam(5e-3))
-                .l2(5e-5)
+                .l2(1e-5)
                 .weightInit(WeightInit.XAVIER)
                 .gradientNormalization(GradientNormalization.ClipElementWiseAbsoluteValue)
                 .gradientNormalizationThreshold(1.0)
@@ -64,10 +64,10 @@ public class SentimentClassifier {
                 .layer(new LSTM.Builder()
                         .nIn(vectorSize)
                         .activation(Activation.TANH)
-                        .nOut(256)
+                        .nOut(512)
                         .build())
                 .layer(new RnnOutputLayer.Builder()
-                        .nIn(256)
+                        .nIn(512)
                         .nOut(2)
                         .lossFunction(LossFunctions.LossFunction.MCXENT)
                         .activation(Activation.SOFTMAX)
@@ -98,8 +98,12 @@ public class SentimentClassifier {
         net.fit(trainIter, nEpochs);
 
         log.info("Evaluating model...");
-        Evaluation eval = net.evaluate(testIter);
-        System.out.println(eval.stats());
+        log.info("Training model evaluation...");
+        Evaluation evalTrain = net.evaluate(trainIter);
+        System.out.println(evalTrain.stats());
+        log.info("Testing model evaluation...");
+        Evaluation evalTest = net.evaluate(testIter);
+        System.out.println(evalTest.stats());
 
         net.save(new File(resourcePath,"RNNSentimentModel.net"), true);
 
