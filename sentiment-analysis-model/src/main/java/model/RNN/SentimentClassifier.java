@@ -45,9 +45,9 @@ public class SentimentClassifier {
 
     public static void main(String[] args) throws IOException {
 
-        int batchSize = 64;     //Number of examples in each minibatch
+        int batchSize = 128;     //Number of examples in each minibatch
         int vectorSize = 300;   //Size of the word vectors. 300 in the ms-wiki model
-        int nEpochs = 1;        //Number of epochs (full passes of training data) to train on
+        int nEpochs = 5;        //Number of epochs (full passes of training data) to train on
         int truncateTweetsToLength = 256;  //Truncate reviews with length (# words) greater than this
         final int seed = 0;     //Seed for reproducibility
 
@@ -56,7 +56,7 @@ public class SentimentClassifier {
         MultiLayerConfiguration conf =  new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .updater(new Adam(5e-3))
-                .l2(1e-5)
+                .l2(5e-5)
                 .weightInit(WeightInit.XAVIER)
                 .gradientNormalization(GradientNormalization.ClipElementWiseAbsoluteValue)
                 .gradientNormalizationThreshold(1.0)
@@ -88,8 +88,8 @@ public class SentimentClassifier {
         SentimentIterator testIter = new SentimentIterator(filePath, wordVectors, batchSize, truncateTweetsToLength, false);
 
         net.setListeners(
-                new ScoreIterationListener(1)
-//                new EvaluativeListener(testIter, 1, InvocationType.EPOCH_END)
+                new ScoreIterationListener(1),
+                new EvaluativeListener(testIter, 1, InvocationType.EPOCH_END)
 //                new StatsListener(statsStorage)
         );
 
