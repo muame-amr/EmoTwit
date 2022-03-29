@@ -37,3 +37,4 @@ twitter-rest-api/target
 twitter-rest-api/twitter4j.properties
 sentiment-analysis-model/src/main/resources/sampleRead.txt
 sentiment-analysis-model/src/main/resources/sampleWrite.txt
+twitter-rest-api/src/main/java/utils/TestingGround.java
