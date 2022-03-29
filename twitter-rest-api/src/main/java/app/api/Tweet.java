@@ -3,7 +3,7 @@ package app.api;
 public class Tweet {
 
     private long id;
-    private double score;
+    private String sentiment;
     private String username;
     private String content;
 
@@ -23,9 +23,13 @@ public class Tweet {
         this.username = username;
     }
 
-    public void setScore(double score) { this.score = score;}
+    public String getSentiment() {
+        return sentiment;
+    }
 
-    public double getScore() { return score; }
+    public void setSentiment(String sentiment) {
+        this.sentiment = sentiment;
+    }
 
     public void setContent(String content) {
         this.content = content;
