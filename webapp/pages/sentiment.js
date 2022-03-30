@@ -1,16 +1,25 @@
 import { React, useState, useEffect } from "react";
-import { Heading, Stack } from "@chakra-ui/react";
+import { ModalOverlay, Stack, useDisclosure } from "@chakra-ui/react";
 import { Main } from "../sections/Main";
 import { Container } from "../sections/Container";
 import { Search } from "../components/Search";
-import { Tables } from "../components/Tables";
+import { Tweets } from "../components/Tweets";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { BackHome } from "../components/BackHome";
-import { Hero } from "../sections/Hero";
+import Head from "next/head";
 
 export default function Sentiment() {
+	const OverlayOne = () => (
+		<ModalOverlay
+			bg="blackAlpha.300"
+			backdropFilter="blur(10px) hue-rotate(90deg)"
+		/>
+	);
+
 	const [tweets, setTweets] = useState([]);
 	const [keyword, setKeyword] = useState("");
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [overlay, setOverlay] = useState(<OverlayOne />);
 
 	useEffect(() => {
 		fetch("http://localhost:8080/api/view")
@@ -27,36 +36,37 @@ export default function Sentiment() {
 		})
 			.then((res) => res.json())
 			.then((data) => setTweets(data));
+		setOverlay(<OverlayOne />);
+		onOpen();
 	};
 
 	const handleKeyword = (e) => {
 		e.preventDefault();
 		setKeyword(e.target.value);
-		// console.log(keyword);
+		console.log(keyword);
 	};
 
 	return (
-		<Container height="100vh">
+		<Container minH="100vh">
+			<Head>
+				<title>EmoTwit - Sentimen Analysis</title>
+				<link rel="icon" href="/feelings.png" />
+			</Head>
 			<BackHome />
 			<DarkModeSwitch />
-			<Heading
-				pt="1rem"
-				textAlign="center"
-				fontSize="48px"
-				size="lg"
-				bgGradient="linear(to-l, #7928CA, #FF0080)"
-				bgClip="text"
-			>
-				Twitter-Sentimental-Analysis
-			</Heading>
+			<Tweets
+				overlay={overlay}
+				isOpen={isOpen}
+				onClose={onClose}
+				tweets={tweets}
+			/>
 			<Main>
-				<Stack align="center" spacing={12}>
+				<Stack align={"center"} justify={"center"}>
 					<Search
 						keyword={keyword}
 						handleKeyword={handleKeyword}
 						handleSubmit={handleSubmit}
 					/>
-					<Tables tweets={tweets} />
 				</Stack>
 			</Main>
 		</Container>
