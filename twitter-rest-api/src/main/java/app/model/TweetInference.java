@@ -7,6 +7,7 @@ import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreproc
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.nd4j.common.io.ClassPathResource;
+import org.nd4j.common.primitives.Pair;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
@@ -32,14 +33,14 @@ public class TweetInference {
         tokenizerFactory.setTokenPreProcessor(new CommonPreprocessor());
     }
 
-    public String getSentiment(String tweet) {
+    public Pair<String, Double> getSentiment(String tweet) {
         INDArray features = getFeatures(tweet);
 
         INDArray networkOutput = net.output(features);
         long timeSeriesLength = networkOutput.size(2);
         INDArray probabilitiesAtLastWord = networkOutput.get(NDArrayIndex.point(0), NDArrayIndex.all(), NDArrayIndex.point(timeSeriesLength - 1));
 
-        return probabilitiesAtLastWord.getDouble(0) > probabilitiesAtLastWord.getDouble(1) ? "Positive" : "Negative";
+        return probabilitiesAtLastWord.getDouble(0) > probabilitiesAtLastWord.getDouble(1) ? new Pair<>("Positive", probabilitiesAtLastWord.getDouble(0)) : new Pair<>("Negative", probabilitiesAtLastWord.getDouble(1));
     }
 
     private INDArray getFeatures(String tweet) {

@@ -51,9 +51,13 @@ public class TwitterResource {
             Tweet user = new Tweet();
             String tweetContent = status.getText();
             user.setId(status.getId());
+            user.setIdstring(String.valueOf(status.getId()));
             user.setUsername(status.getUser().getScreenName());
+            user.setDisplayname(status.getUser().getName());
             user.setContent(tweetContent);
-            user.setSentiment(inference.getSentiment(tweetContent));
+            user.setSentiment(inference.getSentiment(tweetContent).getLeft());
+            user.setScore(inference.getSentiment(tweetContent).getRight());
+            user.setTwitcon(status.getUser().get400x400ProfileImageURL());
             tweetList.add(user);
         }
         return Response.status(Response.Status.CREATED).entity(tweetList).build();
