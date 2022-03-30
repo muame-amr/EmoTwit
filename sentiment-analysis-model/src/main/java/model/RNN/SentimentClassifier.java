@@ -11,6 +11,7 @@ import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.nn.conf.GradientNormalization;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.LSTM;
 import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -64,10 +65,20 @@ public class SentimentClassifier {
                 .layer(new LSTM.Builder()
                         .nIn(vectorSize)
                         .activation(Activation.TANH)
-                        .nOut(512)
+                        .nOut(256)
+                        .build())
+                .layer(new LSTM.Builder()
+                        .nIn(256)
+                        .activation(Activation.TANH)
+                        .nOut(384)
+                        .build())
+                .layer(new LSTM.Builder()
+                        .nIn(384)
+                        .activation(Activation.TANH)
+                        .nOut(128)
                         .build())
                 .layer(new RnnOutputLayer.Builder()
-                        .nIn(512)
+                        .nIn(128)
                         .nOut(2)
                         .lossFunction(LossFunctions.LossFunction.MCXENT)
                         .activation(Activation.SOFTMAX)
