@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import {
 	Heading,
 	Icon,
@@ -8,7 +8,11 @@ import {
 	Text,
 	Input,
 	Button,
+	FormControl,
+	InputGroup,
+	InputLeftElement,
 } from "@chakra-ui/react";
+import { BsTwitter } from "react-icons/bs";
 
 export const Search = ({ keyword, handleKeyword, handleSubmit }) => {
 	return (
@@ -33,21 +37,37 @@ export const Search = ({ keyword, handleKeyword, handleSubmit }) => {
 					Enter a keyword to search for tweets
 				</Text>
 			</Stack>
-			<Stack spacing={4} direction={{ base: "column", md: "row" }} w={"full"}>
-				<Input
-					type={"text"}
-					placeholder={"e.g. nasi lemak"}
-					color={useColorModeValue("gray.800", "gray.200")}
-					bg={useColorModeValue("gray.100", "gray.600")}
-					rounded={"full"}
-					border={0}
-					value={keyword}
-					onChange={handleKeyword}
-					_focus={{
-						bg: useColorModeValue("gray.200", "gray.800"),
-						outline: "none",
-					}}
-				/>
+			<Stack
+				spacing={4}
+				direction={{ base: "column", md: "row" }}
+				w={"full"}
+				as="form"
+			>
+				<FormControl isRequired>
+					<InputGroup>
+						<InputLeftElement
+							pointerEvents="none"
+							color={useColorModeValue("blackAlpha.400", "whiteAlpha.400")}
+							fontSize="1.2em"
+						>
+							<BsTwitter />
+						</InputLeftElement>
+						<Input
+							type={"text"}
+							placeholder={"e.g. nasi lemak"}
+							color={useColorModeValue("gray.800", "gray.200")}
+							bg={useColorModeValue("gray.100", "gray.600")}
+							rounded={"full"}
+							border={0}
+							value={keyword}
+							onChange={handleKeyword}
+							_focus={{
+								bg: useColorModeValue("gray.200", "gray.800"),
+								outline: "none",
+							}}
+						/>
+					</InputGroup>
+				</FormControl>
 				<Button
 					bg={"blue.400"}
 					rounded={"full"}

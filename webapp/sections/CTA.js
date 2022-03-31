@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 export const CTA = (props) => {
 	const router = useRouter();
 	return (
-		<Stack maxH={"100vh"} direction={{ base: "column", md: "row" }}>
+		<Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
 			<Flex p={8} flex={1} align={"center"} justify={"center"}>
 				<Stack spacing={6} w={"full"} maxW={"lg"}>
 					<Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
@@ -54,7 +54,15 @@ export const CTA = (props) => {
 						>
 							Get Started
 						</Button>
-						<Button rounded={"full"}>About Project</Button>
+						<Button
+							rounded={"full"}
+							colorScheme={"gray"}
+							isLoading
+							loadingText={"Coming Soon"}
+							isDisabled
+						>
+							About Project
+						</Button>
 					</Stack>
 				</Stack>
 			</Flex>

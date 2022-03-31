@@ -7,6 +7,7 @@ export const BackHome = () => {
 	return (
 		<Button
 			as={Link}
+			textDecoration={"none"}
 			bg={"transparent"}
 			_focus={{ boxShadow: "none" }}
 			position="fixed"

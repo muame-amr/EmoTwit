@@ -1,12 +1,13 @@
+import { Stack } from "@chakra-ui/react";
 import { React, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Cards } from "../components/Cards";
 
 export default function Sentiment() {
 	return (
 		<>
-			<Button variant="primary" onClick={handleShow}>
-				Launch static backdrop modal
-			</Button>
+			<Stack direction={"column"} align={"center"} justify={"center"} mt={10}>
+				<Cards />
+			</Stack>
 		</>
 	);
 }

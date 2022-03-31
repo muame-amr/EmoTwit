@@ -7,6 +7,7 @@ import { Tweets } from "../components/Tweets";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { BackHome } from "../components/BackHome";
 import Head from "next/head";
+import { Footer } from "../sections/Footer";
 
 export default function Sentiment() {
 	const OverlayOne = () => (
@@ -28,10 +29,10 @@ export default function Sentiment() {
 			.catch(console.log);
 	}, []);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		const api = "http://localhost:8080/api/search?";
 		const queryParam = "keyword=" + encodeURIComponent(keyword);
-		fetch(api + queryParam, {
+		await fetch(api + queryParam, {
 			method: "POST",
 		})
 			.then((res) => res.json())
@@ -69,6 +70,7 @@ export default function Sentiment() {
 					/>
 				</Stack>
 			</Main>
+			<Footer />
 		</Container>
 	);
 }
