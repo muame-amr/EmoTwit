@@ -9,12 +9,24 @@ import java.util.Map;
 
 public class GetTweet {
     public QueryResult getTweets(String keyword) throws TwitterException {
+
+        /*
+
+            // Uncomment this and insert your own API keys
+
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey("*********************")
+                .setOAuthConsumerSecret("******************************************")
+                .setOAuthAccessToken("**************************************************")
+                .setOAuthAccessTokenSecret("******************************************");
+        TwitterFactory twitter = new TwitterFactory(cb.build());
+
+         */
+
         Twitter twitter = new TwitterFactory().getInstance();
-        Query query = new Query(keyword + " exclude:replies exclude:retweets -filter:media");
+        Query query = new Query(keyword + " -is:reply -is:retweet -is:quote -has:media -has:images -has:videos");
         QueryResult result = twitter.search(query);
         return result;
-//        for (Status status : result.getTweets()) {
-//            System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
-//        }
     }
 }
