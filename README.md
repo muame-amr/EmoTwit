@@ -78,7 +78,7 @@
 
 EmoTwit builds and uses classifiers based on neural networks to analyze tweets for emotions in real time and classifies them as positive or negative.
 Then it generates a sentiment score based and percentage of positiveor negative tweets.
-No more filling out spreadsheets for sentiment analysis. Read more details on neural network [here]().
+No more filling out spreadsheets for sentiment analysis. Read more details on neural network [here](https://github.com/muame-amr/EmoTwit/blob/main/sentiment-analysis-model/README.md). API Docs can be find [here](https://github.com/muame-amr/EmoTwit/blob/main/twitter-rest-api/README.md).
 
 ### Built With
 
@@ -179,8 +179,9 @@ Project Link: [https://github.com/muame-amr/EmoTwit](https://github.com/muame-am
 
 ## Acknowledgments
 
-- [Malaya](https://github.com/huseinzol05/malay-dataset) Datasets by Husein Zolkepli
-- Mr. [Google](https://www.google.com/)
+- Malaya Semi-Supervised Malay Tweets [Datasets](https://github.com/huseinzol05/malay-dataset) by Husein Zolkepli
+- Malaysian Text from Twitter [Datasets](https://www.kaggle.com/datasets/ilhamfp31/malaysia-twitter-sentiment) by Husein Zolkepli
+- Malaysia Wiki [Word Vectors](https://github.com/AsyrafAzlan/malay-word2vec-tsne) by Asyraf Azlan
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
