@@ -39,7 +39,7 @@ public class UptrainingWord2Vec {
         vec.fit();
 
         log.info("Vector configurations");
-        System.out.println(vec.getConfiguration().toString());
+        System.out.println(vec.getVocab().words().size());
 
         log.info("Writing word vectors to text file....");
 
