@@ -1,4 +1,4 @@
-# twitter-rest-api Project
+# EmoTwit REST API
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -7,45 +7,102 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
+
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+> **_NOTE:_** Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
-## Packaging and running the application
+## API Docs
 
-The application can be packaged using:
-```shell script
-./mvnw package
+```javascript
+openapi: 3.0.3
+info:
+  title: EmoTwit APIs
+  description: APIs to search tweets and classify their sentiments in real-time
+  license:
+    name: MIT
+    url: http://localhost:8080
+  version: 1.0.0
+tags:
+- name: Tweet
+  description: Tweets
+- name: EmoTwit Resources
+  description: EmoTwit REST APIs
+paths:
+  /api/clear:
+    delete:
+      tags:
+      - EmoTwit Resources
+      summary: Clear list of tweets
+      description: Delete all existing tweets inside the list
+      operationId: clearTweets
+      responses:
+        "204":
+          description: Tweet list cleared
+          content:
+            application/json: {}
+        "400":
+          description: Request not valid
+          content:
+            application/json: {}
+  /api/search:
+    post:
+      tags:
+      - EmoTwit Resources
+      summary: Search tweets
+      description: Search tweets by entering a keyword and add them to the list
+      operationId: searchTweets
+      parameters:
+      - name: keyword
+        in: query
+        description: Search query
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          description: Tweets added
+          content:
+            application/json: {}
+  /api/view:
+    get:
+      tags:
+      - EmoTwit Resources
+      summary: Get tweet list
+      description: Get all tweet information inside the list
+      operationId: getTweets
+      responses:
+        "200":
+          description: Operation complete
+          content:
+            application/json: {}
+components:
+  schemas:
+    Tweet:
+      description: Tweet profile or representation
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        score:
+          format: double
+          type: number
+        sentiment:
+          type: string
+        username:
+          type: string
+        idstring:
+          type: string
+        displayname:
+          type: string
+        content:
+          type: string
+        twitcon:
+          type: string
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/twitter-rest-api-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
 ## Related Guides
 

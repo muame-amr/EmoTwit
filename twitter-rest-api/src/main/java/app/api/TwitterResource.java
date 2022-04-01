@@ -7,6 +7,11 @@ import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.nd4j.common.io.ClassPathResource;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -19,6 +24,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Path("/api")
+@Tag(name = "EmoTwit Resources", description = "EmoTwit REST APIs")
 public class TwitterResource {
 
     MultiLayerNetwork net = MultiLayerNetwork.load(new ClassPathResource("RNNSentimentModel.net").getFile(), false);
@@ -32,6 +38,16 @@ public class TwitterResource {
     @GET
     @Path("/view")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            operationId = "getTweets",
+            summary = "Get tweet list",
+            description = "Get all tweet information inside the list"
+    )
+    @APIResponse(
+            responseCode = "200",
+            description = "Operation complete",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON)
+    )
     public Response getTweets() {
         return Response.ok(tweetList).build();
     }
@@ -40,7 +56,21 @@ public class TwitterResource {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            operationId = "searchTweets",
+            summary = "Search tweets",
+            description = "Search tweets by entering a keyword and add them to the list"
+    )
+    @APIResponse(
+            responseCode = "201",
+            description = "Tweets added",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON)
+    )
     public Response searchTweets(
+            @Parameter(
+                    description = "Search query",
+                    required = true
+            )
             @QueryParam("keyword")
                     String keyword
     ) throws TwitterException {
@@ -65,6 +95,21 @@ public class TwitterResource {
 
     @DELETE
     @Path("/clear")
+    @Operation(
+            operationId = "clearTweets",
+            summary = "Clear list of tweets",
+            description = "Delete all existing tweets inside the list"
+    )
+    @APIResponse(
+            responseCode = "204",
+            description = "Tweet list cleared",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON)
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "Request not valid",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON)
+    )
     public Response clearTweets() {
         if(!tweetList.isEmpty()) tweetList.clear();
         return tweetList.isEmpty() ? Response.noContent().build() : Response.status(Response.Status.BAD_REQUEST).build();
