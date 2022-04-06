@@ -26,7 +26,9 @@ import java.util.Map;
 
 public class FilteredStream {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        String bearerToken = "AAAAAAAAAAAAAAAAAAAAAEPSaAEAAAAA889nYoFvsi8FBlVA3vOQoEz62KE%3D6wMtQvyzAMn2Ez6BwDt0cLb6rDB4oX7d1UgYqqvWkJDD6UbZW6";
+        // To set your enviornment variables in your terminal run the following line:
+        // export 'BEARER_TOKEN'='<your_bearer_token>'
+        String bearerToken = System.getenv("BEARER_TOKEN");
         if (null != bearerToken) {
             Map<String, String> rules = new HashMap<>();
             rules.put("elonmusk", "");
@@ -48,7 +50,7 @@ public class FilteredStream {
                         .setCookieSpec(CookieSpecs.STANDARD).build())
                 .build();
 
-        URIBuilder uriBuilder = new URIBuilder("https://api.twitter.com/2/tweets/search/stream");
+        URIBuilder uriBuilder = new URIBuilder("https://api.twitter.com/2/tweets/search/stream?tweet.fields=id,text&user.fields=id,name,username,profile_image_url");
 
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         httpGet.setHeader("Authorization", String.format("Bearer %s", bearerToken));
