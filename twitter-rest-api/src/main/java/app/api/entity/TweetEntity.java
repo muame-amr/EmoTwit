@@ -1,12 +1,10 @@
-package app.api;
+package app.api.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
-import java.net.URL;
 
 @Schema(
       name = "Tweet",
@@ -17,7 +15,7 @@ import java.net.URL;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
-public class Tweet {
+public class TweetEntity {
     private long id;
     private double score;
     private String sentiment;

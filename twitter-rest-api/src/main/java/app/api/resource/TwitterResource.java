@@ -1,12 +1,11 @@
-package app.api;
+package app.api.resource;
 
-import app.api.Tweet;
+import app.api.entity.TweetEntity;
 import app.model.TweetInference;
 import app.twitter.GetTweet;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -30,7 +29,7 @@ public class TwitterResource {
     MultiLayerNetwork net = MultiLayerNetwork.load(new ClassPathResource("RNNSentimentModel.net").getFile(), false);
     WordVectors vec = WordVectorSerializer.loadStaticModel(new ClassPathResource("mswiki-uptrain.zip").getFile());
     TweetInference inference = new TweetInference(net, vec);
-    Set<Tweet> tweetList = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+    Set<TweetEntity> tweetEntityList = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     public TwitterResource() throws IOException {;
     }
@@ -49,12 +48,11 @@ public class TwitterResource {
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     public Response getTweets() {
-        return Response.ok(tweetList).build();
+        return Response.ok(tweetEntityList).build();
     }
 
     @POST
     @Path("/search")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
             operationId = "searchTweets",
@@ -74,11 +72,11 @@ public class TwitterResource {
             @QueryParam("keyword")
                     String keyword
     ) throws TwitterException {
-        if(!tweetList.isEmpty())
-            tweetList.clear();
+        if(!tweetEntityList.isEmpty())
+            tweetEntityList.clear();
         QueryResult tweet = new GetTweet().getTweets(keyword);
         for(Status status : tweet.getTweets()) {
-            Tweet user = new Tweet();
+            TweetEntity user = new TweetEntity();
             String tweetContent = status.getText();
             user.setId(status.getId());
             user.setIdstring(String.valueOf(status.getId()));
@@ -88,9 +86,9 @@ public class TwitterResource {
             user.setSentiment(inference.getSentiment(tweetContent).getLeft());
             user.setScore(inference.getSentiment(tweetContent).getRight());
             user.setTwitcon(status.getUser().get400x400ProfileImageURL());
-            tweetList.add(user);
+            tweetEntityList.add(user);
         }
-        return Response.status(Response.Status.CREATED).entity(tweetList).build();
+        return Response.status(Response.Status.CREATED).entity(tweetEntityList).build();
     }
 
     @DELETE
@@ -111,7 +109,7 @@ public class TwitterResource {
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     public Response clearTweets() {
-        if(!tweetList.isEmpty()) tweetList.clear();
-        return tweetList.isEmpty() ? Response.noContent().build() : Response.status(Response.Status.BAD_REQUEST).build();
+        if(!tweetEntityList.isEmpty()) tweetEntityList.clear();
+        return tweetEntityList.isEmpty() ? Response.noContent().build() : Response.status(Response.Status.BAD_REQUEST).build();
     }
 }
