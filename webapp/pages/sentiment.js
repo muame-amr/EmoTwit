@@ -6,6 +6,7 @@ import { Search } from "../components/Search";
 import { Tweets } from "../components/Tweets";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { BackHome } from "../components/BackHome";
+import { getTweet, searchTweet } from "./api/sentiment";
 import Head from "next/head";
 import { Footer } from "../sections/Footer";
 
@@ -23,20 +24,15 @@ export default function Sentiment() {
 	const [overlay, setOverlay] = useState(<OverlayOne />);
 
 	useEffect(() => {
-		fetch("http://localhost:8080/api/view")
-			.then((res) => res.json())
-			.then((data) => setTweets(data))
-			.catch(console.log);
+		getTweet().then((res) => {
+			setTweets(res);
+		});
 	}, []);
 
 	const handleSubmit = async () => {
-		const api = "http://localhost:8080/api/search?";
-		const queryParam = "keyword=" + encodeURIComponent(keyword);
-		await fetch(api + queryParam, {
-			method: "POST",
-		})
-			.then((res) => res.json())
-			.then((data) => setTweets(data));
+		searchTweet(keyword).then((res) => {
+			setTweets(res);
+		});
 		setOverlay(<OverlayOne />);
 		onOpen();
 	};
@@ -44,7 +40,7 @@ export default function Sentiment() {
 	const handleKeyword = (e) => {
 		e.preventDefault();
 		setKeyword(e.target.value);
-		console.log(keyword);
+		// console.log(keyword);
 	};
 
 	return (
